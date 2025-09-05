@@ -24,15 +24,15 @@ export default function LandingPage() {
           Upload your bank statement and get instant categorization, predictions, and actionable insights.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch mb-12 max-w-md mx-auto">
           <input
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="px-4 py-3 rounded-lg bg-dark-800 border border-gray-600 text-white w-full sm:w-80"
+            className="px-4 py-3 rounded-lg bg-dark-800 border border-gray-600 text-white flex-1"
           />
-          <a href="/auth" className="btn-primary flex items-center gap-2 w-full sm:w-auto">
+          <a href="/auth" className="btn-primary flex items-center justify-center gap-2 whitespace-nowrap">
             Get Started Free →
           </a>
         </div>
@@ -47,28 +47,28 @@ export default function LandingPage() {
         <h2 className="text-3xl font-bold text-center mb-12">Built for Indian UPI Users</h2>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="card text-center">
+          <div className="card text-center h-full flex flex-col">
             <div className="w-12 h-12 text-primary-400 mx-auto mb-4 text-4xl">🧠</div>
             <h3 className="text-xl font-semibold mb-2">AI Categorization</h3>
-            <p className="text-gray-400">Understands PhonePe, GPay, Paytm transactions with 95% accuracy</p>
+            <p className="text-gray-400 flex-1">Understands PhonePe, GPay, Paytm transactions with 95% accuracy</p>
           </div>
           
-          <div className="card text-center">
+          <div className="card text-center h-full flex flex-col">
             <div className="w-12 h-12 text-primary-400 mx-auto mb-4 text-4xl">🛡️</div>
             <h3 className="text-xl font-semibold mb-2">Privacy First</h3>
-            <p className="text-gray-400">Process PDFs locally, zero data storage, bank-grade security</p>
+            <p className="text-gray-400 flex-1">Process PDFs locally, zero data storage, bank-grade security</p>
           </div>
           
-          <div className="card text-center">
+          <div className="card text-center h-full flex flex-col">
             <div className="w-12 h-12 text-primary-400 mx-auto mb-4 text-4xl">📈</div>
             <h3 className="text-xl font-semibold mb-2">Smart Predictions</h3>
-            <p className="text-gray-400">Forecast spending, track goals, optimize EMIs and cashbacks</p>
+            <p className="text-gray-400 flex-1">Forecast spending, track goals, optimize EMIs and cashbacks</p>
           </div>
           
-          <div className="card text-center">
+          <div className="card text-center h-full flex flex-col">
             <div className="w-12 h-12 text-primary-400 mx-auto mb-4 text-4xl">⚡</div>
             <h3 className="text-xl font-semibold mb-2">Instant Insights</h3>
-            <p className="text-gray-400">Festival budgets, subscription tracking, spending triggers</p>
+            <p className="text-gray-400 flex-1">Festival budgets, subscription tracking, spending triggers</p>
           </div>
         </div>
       </section>

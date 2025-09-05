@@ -17,78 +17,109 @@ const server = http.createServer((req, res) => {
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%); }
-        .card-glow { 
-            background: linear-gradient(145deg, rgba(26, 26, 26, 0.8), rgba(10, 10, 10, 0.9));
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .gradient-bg { background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%); }
+        .card { 
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
         }
-        .neon-border {
-            border: 1px solid transparent;
-            background: linear-gradient(145deg, rgba(26, 26, 26, 0.8), rgba(10, 10, 10, 0.9)) padding-box,
-                        linear-gradient(45deg, #00d4aa, #6366f1, #ec4899) border-box;
+        .brand-accent { color: #14b8a6; }
+        .brand-bg { background-color: #14b8a6; }
+        .brand-border { border-color: #14b8a6; }
+        .upload-zone { transition: all 0.2s ease; }
+        .upload-zone:hover { border-color: #14b8a6; background-color: rgba(20, 184, 166, 0.05); }
+        .btn-primary { 
+            background: #14b8a6; 
+            color: white; 
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
-        .upload-zone { transition: all 0.3s ease; }
-        .upload-zone:hover { transform: scale(1.02); border-color: #00d4aa; }
+        .btn-primary:hover { background: #0f766e; transform: translateY(-1px); }
+        .text-hierarchy-1 { font-size: 2rem; font-weight: 800; }
+        .text-hierarchy-2 { font-size: 1.25rem; font-weight: 600; }
+        .text-hierarchy-3 { font-size: 0.875rem; font-weight: 400; }
+        .section-spacing { margin-bottom: 1.5rem; }
     </style>
 </head>
 <body class="gradient-bg text-white min-h-screen">
     <div class="p-6">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12">
-                <h1 class="text-5xl font-black mb-4 bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <div class="text-center mb-8">
+                <h1 class="text-hierarchy-1 mb-2 brand-accent">
                     ExpenseAI
                 </h1>
-                <p class="text-xl text-gray-400">Real ICICI statement processing</p>
+                <p class="text-hierarchy-3 text-gray-400">Smart ICICI statement analysis</p>
             </div>
 
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
-                <div class="card-glow rounded-3xl p-8 h-full">
-                    <h2 class="text-2xl font-bold mb-8">Upload ICICI Statement</h2>
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+                <!-- Left Panel - Upload & Info -->
+                <div class="card p-6">
+                    <h2 class="text-hierarchy-2 mb-6 text-white">Upload Statement</h2>
                     
-                    <div class="upload-zone border-3 border-dashed border-gray-600 rounded-2xl p-16 text-center cursor-pointer hover:border-green-400 hover:bg-green-400/5 transition-all duration-300" onclick="document.getElementById('file-input').click()">
+                    <div class="upload-zone border-2 border-dashed border-gray-600 rounded-xl p-12 text-center cursor-pointer mb-6" onclick="document.getElementById('file-input').click()">
                         <input type="file" id="file-input" accept=".pdf" style="display:none">
                         
-                        <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-green-400 to-blue-400 rounded-2xl flex items-center justify-center">
-                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-16 h-16 mx-auto mb-4 brand-bg rounded-xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold mb-3">Upload Your ICICI PDF</h3>
-                        <p class="text-gray-400">Real parsing of your actual statement</p>
+                        <h3 class="text-hierarchy-3 font-semibold mb-2 text-white">Drop ICICI PDF here</h3>
+                        <p class="text-hierarchy-3 text-gray-400">Secure local processing</p>
                     </div>
 
-                    <div id="file-info" class="hidden mt-4 p-4 bg-gray-700 rounded-lg">
-                        <div class="font-medium" id="file-name">-</div>
-                        <div class="text-sm text-gray-400" id="file-size">-</div>
+                    <div id="file-info" class="hidden mb-6 p-4 bg-gray-800 rounded-lg">
+                        <div class="font-medium text-white" id="file-name">-</div>
+                        <div class="text-hierarchy-3 text-gray-400" id="file-size">-</div>
                     </div>
 
-                    <button id="process-btn" class="w-full mt-8 neon-border rounded-2xl py-5 px-8 font-bold text-xl transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:opacity-50" disabled>
+                    <button id="process-btn" class="btn-primary w-full py-4 px-6 text-hierarchy-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                         Select PDF to Process
                     </button>
+                    
+                    <!-- Additional Content for Balance -->
+                    <div class="mt-8 space-y-4">
+                        <div class="p-4 bg-gray-800/50 rounded-lg">
+                            <h4 class="text-hierarchy-3 font-semibold text-white mb-2">✨ What we analyze</h4>
+                            <ul class="text-hierarchy-3 text-gray-400 space-y-1">
+                                <li>• UPI transactions & categories</li>
+                                <li>• Spending patterns & trends</li>
+                                <li>• Financial health score</li>
+                                <li>• Smart recommendations</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-gray-800/50 rounded-lg">
+                            <h4 class="text-hierarchy-3 font-semibold text-white mb-2">🔒 Privacy guaranteed</h4>
+                            <p class="text-hierarchy-3 text-gray-400">All processing happens locally. Your data never leaves your device.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card-glow rounded-3xl p-8 h-full">
-                    <h2 class="text-2xl font-bold mb-8">Real Results</h2>
-                    <div id="results-area" class="flex items-center justify-center h-full min-h-[400px]">
+                <!-- Right Panel - Results -->
+                <div class="card p-6">
+                    <h2 class="text-hierarchy-2 mb-6 text-white">Analysis Results</h2>
+                    <div id="results-area" class="flex items-center justify-center min-h-[400px]">
                         <div class="text-center text-gray-500">
-                            <div class="w-24 h-24 mx-auto mb-6 bg-gray-800 rounded-2xl flex items-center justify-center">
-                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-20 h-20 mx-auto mb-4 bg-gray-800 rounded-xl flex items-center justify-center">
+                                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                 </svg>
                             </div>
-                            <p class="text-lg">Upload your ICICI statement</p>
+                            <p class="text-hierarchy-3">Upload statement to see insights</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="processing-status" class="hidden mt-8 card-glow rounded-2xl p-6">
+            <div id="processing-status" class="hidden mt-6 card p-4">
                 <div class="flex items-center gap-4">
-                    <div class="w-8 h-8 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+                    <div class="w-6 h-6 border-3 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
                     <div>
-                        <div class="font-semibold">Processing your ICICI statement...</div>
-                        <div class="text-sm text-gray-400" id="processing-step">Reading PDF...</div>
+                        <div class="text-hierarchy-3 font-semibold text-white">Processing statement...</div>
+                        <div class="text-hierarchy-3 text-gray-400" id="processing-step">Reading PDF...</div>
                     </div>
                 </div>
             </div>
@@ -106,7 +137,7 @@ const server = http.createServer((req, res) => {
                 document.getElementById('file-size').textContent = formatFileSize(file.size);
                 document.getElementById('file-info').classList.remove('hidden');
                 document.getElementById('process-btn').disabled = false;
-                document.getElementById('process-btn').textContent = 'Process Real Statement';
+                document.getElementById('process-btn').textContent = 'Analyze Statement';
             }
         }
 
@@ -138,7 +169,7 @@ const server = http.createServer((req, res) => {
                 
                 processingStatus.classList.add('hidden');
                 this.disabled = false;
-                this.textContent = 'Process Another';
+                this.textContent = 'Analyze Another';
                 
                 if (response.ok) {
                     displayResults(result);
@@ -173,202 +204,182 @@ const server = http.createServer((req, res) => {
             const categories = [...new Set(data.transactions.map(tx => tx.category))];
             
             document.getElementById('results-area').innerHTML = \`
-                <div class="space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="text-center p-6 bg-gray-700/50 rounded-2xl border border-gray-600">
-                            <div class="text-3xl font-bold text-red-400 mb-2">₹\${totalSpent.toLocaleString()}</div>
-                            <div class="text-sm text-gray-400 font-medium">Total Spent</div>
+                <div class="space-y-6">
+                    <!-- PRIMARY: Financial Overview -->
+                    <div class="section-spacing">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center p-4 bg-gray-800/50 rounded-xl">
+                                <div class="text-2xl font-bold text-red-400 mb-1">₹\${totalSpent.toLocaleString()}</div>
+                                <div class="text-hierarchy-3 text-gray-300 font-medium">Total Spent</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-800/50 rounded-xl">
+                                <div class="text-2xl font-bold brand-accent mb-1">₹\${totalIncome.toLocaleString()}</div>
+                                <div class="text-hierarchy-3 text-gray-300 font-medium">Total Income</div>
+                            </div>
                         </div>
-                        <div class="text-center p-6 bg-gray-700/50 rounded-2xl border border-gray-600">
-                            <div class="text-3xl font-bold text-green-400 mb-2">₹\${totalIncome.toLocaleString()}</div>
-                            <div class="text-sm text-gray-400 font-medium">Total Income</div>
-                        </div>
-                        <div class="text-center p-6 bg-gray-700/50 rounded-2xl border border-gray-600">
-                            <div class="text-3xl font-bold text-blue-400 mb-2">\${data.transactions.length}</div>
-                            <div class="text-sm text-gray-400 font-medium">Transactions</div>
+                        <div class="text-center p-3 bg-teal-900/20 border border-teal-600/30 rounded-xl">
+                            <div class="text-hierarchy-3 text-teal-300">✅ \${data.transactions.length} transactions analyzed • \${categories.length} categories</div>
                         </div>
                     </div>
 
-                    <div class="p-6 bg-green-900/20 border border-green-600 rounded-2xl">
-                        <div class="font-semibold text-green-300 text-lg">✅ ICICI Bank Statement Processed</div>
-                        <div class="text-sm text-green-200 mt-2">Real data from your PDF • \${categories.length} categories found</div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-2xl font-bold mb-6 text-white">Your Transactions</h3>
-                        <div class="space-y-3 max-h-96 overflow-y-auto">
-                            \${data.transactions.map(tx => \`
-                                <div class="p-6 bg-gray-800/50 rounded-2xl border border-gray-700 hover:border-gray-600 transition-all duration-200 hover:shadow-lg">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex-1 pr-4">
-                                            <div class="font-semibold text-base mb-2 text-white" title="\${tx.description}">
-                                                \${tx.description.length > 40 ? tx.description.substring(0, 40) + '...' : tx.description}
-                                            </div>
-                                            <div class="text-sm text-gray-400">
-                                                \${formatDate(tx.date)} • 
-                                                <span class="inline-flex items-center gap-1">
-                                                    \${getCategoryIcon(tx.category)} \${tx.category}
-                                                </span>
+                    <!-- SECONDARY: Transactions -->
+                    <div class="section-spacing">
+                        <h3 class="text-hierarchy-2 mb-4 text-white">Recent Transactions</h3>
+                        <div class="space-y-2 max-h-80 overflow-y-auto">
+                            \${data.transactions.slice(0, 8).map(tx => \`
+                                <div class="p-4 bg-gray-800/30 rounded-lg border border-gray-700/50 hover:border-gray-600/50 transition-colors">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-center gap-3 flex-1">
+                                            <div class="text-lg">\${getCategoryIcon(tx.category)}</div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="text-hierarchy-3 font-medium text-white truncate" title="\${tx.description}">
+                                                    \${tx.description.length > 35 ? tx.description.substring(0, 35) + '...' : tx.description}
+                                                </div>
+                                                <div class="text-xs text-gray-400">
+                                                    \${formatDate(tx.date)} • \${tx.category}
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="text-right flex-shrink-0">
-                                            <div class="text-xl font-bold mb-1 \${tx.amount < 0 ? 'text-red-400' : 'text-green-400'}">
+                                        <div class="text-right">
+                                            <div class="text-base font-semibold \${tx.amount < 0 ? 'text-red-400' : 'brand-accent'}">
                                                 \${tx.amount < 0 ? '-' : '+'}₹\${Math.abs(tx.amount).toLocaleString()}
                                             </div>
-                                            <div class="text-sm text-gray-500">Balance: ₹\${tx.balance.toLocaleString()}</div>
                                         </div>
                                     </div>
                                 </div>
                             \`).join('')}
+                            \${data.transactions.length > 8 ? \`<div class="text-center py-2"><span class="text-hierarchy-3 text-gray-400">+\${data.transactions.length - 8} more transactions</span></div>\` : ''}
                         </div>
                     </div>
                     
-                    <!-- Advanced Intelligence Features -->
-                    <div class="mt-20 space-y-16">
-                        <!-- Financial Health Score -->
-                        <div class="card-glow rounded-3xl p-10 shadow-2xl">
-                            <h3 class="text-3xl font-black mb-8 text-center">💊 Financial Health Score</h3>
-                            <div class="flex items-center justify-center mb-8">
-                                <div class="relative w-32 h-32">
-                                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                                        <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none" />
-                                        <circle id="health-circle" cx="50" cy="50" r="40" stroke="#00d4aa" stroke-width="8" fill="none" 
-                                                stroke-dasharray="0 251" class="transition-all duration-2000" />
-                                    </svg>
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <div class="text-center">
-                                            <div class="text-3xl font-bold text-green-400" id="health-score">7.8</div>
-                                            <div class="text-sm text-gray-400">out of 10</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div class="text-center p-6 bg-gray-800/50 rounded-2xl border border-gray-700">
-                                    <div class="text-2xl font-bold text-green-400 mb-2">8.5/10</div>
-                                    <div class="text-base text-gray-300 font-medium mb-1">Emergency Fund</div>
-                                    <div class="text-sm text-gray-500">3.2 months covered</div>
-                                </div>
-                                <div class="text-center p-6 bg-gray-800/50 rounded-2xl border border-gray-700">
-                                    <div class="text-2xl font-bold text-yellow-400 mb-2">6.1/10</div>
-                                    <div class="text-base text-gray-300 font-medium mb-1">Savings Rate</div>
-                                    <div class="text-sm text-gray-500">15% - aim for 20%</div>
-                                </div>
-                                <div class="text-center p-6 bg-gray-800/50 rounded-2xl border border-gray-700">
-                                    <div class="text-2xl font-bold text-green-400 mb-2">9.2/10</div>
-                                    <div class="text-base text-gray-300 font-medium mb-1">Debt Ratio</div>
-                                    <div class="text-sm text-gray-500">Only 8% of income</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Spending Personality -->
-                        <div class="card-glow rounded-3xl p-10 shadow-2xl">
-                            <h3 class="text-3xl font-black mb-8 text-center">🧠 Your Spending Personality</h3>
-                            <div class="text-center mb-6">
-                                <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-2xl">
-                                    🎉
-                                </div>
-                                <h4 class="text-xl font-bold mb-2">Weekend Warrior</h4>
-                                <div class="text-sm text-gray-400 mb-4">85% confidence</div>
-                                <div class="space-y-2 text-sm max-w-md mx-auto">
-                                    <div class="text-gray-300">• You spend 60% of your money on weekends</div>
-                                    <div class="text-gray-300">• Weekend spending: ₹8,400 this month</div>
-                                    <div class="text-purple-300">→ Set a weekend budget to control leisure spending</div>
-                                    <div class="text-purple-300">→ Plan weekday activities to balance your spending</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Smart Alerts -->
-                        <div class="card-glow rounded-3xl p-10 shadow-2xl">
-                            <h3 class="text-3xl font-black mb-8">🚨 Smart Alerts & Recommendations</h3>
-                            <div class="space-y-4">
-                                <div class="p-4 bg-gradient-to-r from-yellow-500/20 to-transparent border border-yellow-500/30 rounded-xl">
-                                    <div class="flex items-start gap-3">
-                                        <div class="text-xl">⚠️</div>
-                                        <div>
-                                            <h4 class="font-semibold mb-1">Overspend Alert</h4>
-                                            <p class="text-sm text-gray-300 mb-3">At this pace, you'll overspend by ₹2,400 this month</p>
-                                            <div class="flex gap-2">
-                                                <button class="px-3 py-1 bg-yellow-500/20 border border-yellow-500/40 rounded-lg text-sm hover:bg-yellow-500/30 transition-colors">See breakdown</button>
-                                                <button class="px-3 py-1 bg-yellow-500/20 border border-yellow-500/40 rounded-lg text-sm hover:bg-yellow-500/30 transition-colors">Set daily limit</button>
+                    <!-- SECONDARY: Financial Health & Alerts -->
+                    <div class="section-spacing">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Health Score -->
+                            <div class="p-4 bg-gray-800/30 rounded-xl">
+                                <h4 class="text-hierarchy-3 font-semibold text-white mb-3">💊 Health Score</h4>
+                                <div class="flex items-center justify-center mb-4">
+                                    <div class="relative w-20 h-20">
+                                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="6" fill="none" />
+                                            <circle id="health-circle" cx="50" cy="50" r="40" stroke="#14b8a6" stroke-width="6" fill="none" 
+                                                    stroke-dasharray="0 251" class="transition-all duration-2000" />
+                                        </svg>
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class="text-center">
+                                                <div class="text-lg font-bold brand-accent" id="health-score">7.8</div>
+                                                <div class="text-xs text-gray-400">/10</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-4 bg-gradient-to-r from-blue-500/20 to-transparent border border-blue-500/30 rounded-xl">
-                                    <div class="flex items-start gap-3">
-                                        <div class="text-xl">💡</div>
-                                        <div>
-                                            <h4 class="font-semibold mb-1">Investment Opportunity</h4>
-                                            <p class="text-sm text-gray-300 mb-3">You have ₹4,200 surplus this month. Perfect time to invest!</p>
-                                            <div class="flex gap-2">
-                                                <button class="px-3 py-1 bg-blue-500/20 border border-blue-500/40 rounded-lg text-sm hover:bg-blue-500/30 transition-colors">Start SIP</button>
-                                                <button class="px-3 py-1 bg-blue-500/20 border border-blue-500/40 rounded-lg text-sm hover:bg-blue-500/30 transition-colors">Add to emergency fund</button>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-hierarchy-3">
+                                        <span class="text-gray-300">Emergency Fund</span>
+                                        <span class="brand-accent font-medium">8.5/10</span>
+                                    </div>
+                                    <div class="flex justify-between text-hierarchy-3">
+                                        <span class="text-gray-300">Savings Rate</span>
+                                        <span class="text-yellow-400 font-medium">6.1/10</span>
+                                    </div>
+                                    <div class="flex justify-between text-hierarchy-3">
+                                        <span class="text-gray-300">Debt Ratio</span>
+                                        <span class="brand-accent font-medium">9.2/10</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Smart Alerts -->
+                            <div class="p-4 bg-gray-800/30 rounded-xl">
+                                <h4 class="text-hierarchy-3 font-semibold text-white mb-3">🚨 Smart Alerts</h4>
+                                <div class="space-y-3">
+                                    <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                                        <div class="flex items-start gap-2">
+                                            <div class="text-sm">⚠️</div>
+                                            <div class="flex-1">
+                                                <div class="text-hierarchy-3 font-medium text-white">Overspend Alert</div>
+                                                <div class="text-xs text-gray-300">May exceed budget by ₹2,400</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-teal-500/10 border border-teal-500/20 rounded-lg">
+                                        <div class="flex items-start gap-2">
+                                            <div class="text-sm">💡</div>
+                                            <div class="flex-1">
+                                                <div class="text-hierarchy-3 font-medium text-white">Investment Opportunity</div>
+                                                <div class="text-xs text-gray-300">₹4,200 surplus available</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Quick Actions -->
-                        <div class="card-glow rounded-3xl p-10 shadow-2xl">
-                            <h3 class="text-3xl font-black mb-8">⚡ Quick Actions</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                <div class="h-56 p-8 bg-gradient-to-br from-green-500/20 to-green-500/5 border border-green-500/30 rounded-3xl cursor-pointer hover:scale-105 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
-                                    <div class="flex-1">
-                                        <div class="text-5xl mb-6">💰</div>
-                                        <h4 class="font-bold text-xl mb-3">Auto-Save Surplus</h4>
-                                        <p class="text-gray-300 text-base">Move extra money to savings</p>
-                                    </div>
-                                    <div class="text-green-400 font-bold text-xl mt-4">₹2,400</div>
-                                </div>
-                                <div class="h-56 p-8 bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/30 rounded-3xl cursor-pointer hover:scale-105 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
-                                    <div class="flex-1">
-                                        <div class="text-5xl mb-6">📈</div>
-                                        <h4 class="font-bold text-xl mb-3">Start SIP Investment</h4>
-                                        <p class="text-gray-300 text-base">Begin systematic investing</p>
-                                    </div>
-                                    <div class="text-purple-400 font-bold text-xl mt-4">₹1,000/month</div>
-                                </div>
-                                <div class="h-56 p-8 bg-gradient-to-br from-pink-500/20 to-pink-500/5 border border-pink-500/30 rounded-3xl cursor-pointer hover:scale-105 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
-                                    <div class="flex-1">
-                                        <div class="text-5xl mb-6">🎯</div>
-                                        <h4 class="font-bold text-xl mb-3">Set Spending Limit</h4>
-                                        <p class="text-gray-300 text-base">Control daily expenses</p>
-                                    </div>
-                                    <div class="text-pink-400 font-bold text-xl mt-4">₹800/day</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Money Coach Chat -->
-                        <div class="card-glow rounded-3xl p-10 shadow-2xl">
-                            <h3 class="text-3xl font-black mb-8">🤖 AI Money Coach</h3>
-                            <div class="bg-gray-800/50 rounded-2xl p-6 mb-4">
-                                <div class="flex items-start gap-3 mb-4">
-                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm">🤖</div>
-                                    <div class="flex-1">
-                                        <div class="bg-gray-700 rounded-2xl p-4">
-                                            <p class="text-sm">👋 Hi! I'm your AI money coach. Ask me anything about your finances!</p>
-                                            <p class="text-xs text-gray-400 mt-2">Try: "Should I buy this ₹X item?" or "How can I save for vacation?"</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <input type="text" placeholder="Ask your money coach..." class="flex-1 bg-gray-800 border border-gray-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500">
-                                <button class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-medium transition-colors">Send</button>
-                            </div>
-                            <div class="flex gap-2 mt-3">
-                                <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded-full text-xs transition-colors">Saving tips?</button>
-                                <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded-full text-xs transition-colors">Investment advice?</button>
-                                <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded-full text-xs transition-colors">Budget help?</button>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- TERTIARY: Spending Personality & Quick Actions -->
+                    <div class="section-spacing">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Spending Personality -->
+                            <div class="p-4 bg-gray-800/30 rounded-xl">
+                                <h4 class="text-hierarchy-3 font-semibold text-white mb-3">🧠 Spending Pattern</h4>
+                                <div class="text-center">
+                                    <div class="w-12 h-12 mx-auto mb-3 bg-purple-500/20 rounded-xl flex items-center justify-center text-lg">
+                                        🎉
+                                    </div>
+                                    <div class="text-hierarchy-3 font-semibold text-white mb-1">Weekend Warrior</div>
+                                    <div class="text-xs text-gray-400 mb-3">85% confidence</div>
+                                    <div class="space-y-1 text-xs text-gray-300">
+                                        <div>• 60% spending on weekends</div>
+                                        <div>• ₹8,400 weekend spending</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Quick Actions -->
+                            <div class="p-4 bg-gray-800/30 rounded-xl">
+                                <h4 class="text-hierarchy-3 font-semibold text-white mb-3">⚡ Quick Actions</h4>
+                                <div class="space-y-2">
+                                    <button class="w-full p-3 bg-teal-500/10 border border-teal-500/20 rounded-lg text-left hover:bg-teal-500/20 transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm">💰</span>
+                                            <div class="flex-1">
+                                                <div class="text-hierarchy-3 font-medium text-white">Auto-Save Surplus</div>
+                                                <div class="text-xs text-gray-300">Move ₹2,400 to savings</div>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <button class="w-full p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg text-left hover:bg-purple-500/20 transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm">📈</span>
+                                            <div class="flex-1">
+                                                <div class="text-hierarchy-3 font-medium text-white">Start SIP</div>
+                                                <div class="text-xs text-gray-300">₹1,000/month investment</div>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- AI Money Coach - Fixed Position -->
+                <div class="fixed bottom-4 right-4 w-80 max-w-sm">
+                    <div class="card p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-6 h-6 brand-bg rounded-full flex items-center justify-center text-xs">🤖</div>
+                            <h4 class="text-hierarchy-3 font-semibold text-white">AI Coach</h4>
+                        </div>
+                        <div class="bg-gray-800/50 rounded-lg p-3 mb-3">
+                            <p class="text-hierarchy-3 text-gray-300">💡 Based on your spending, consider setting a ₹800/day limit for better control.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Ask me anything..." class="flex-1 bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-hierarchy-3 focus:outline-none focus:border-teal-500">
+                            <button class="btn-primary px-3 py-2 text-hierarchy-3">Send</button>
+                        </div>
+                    </div>
+                </div>
                 </div>
             \`;
             
@@ -382,7 +393,7 @@ const server = http.createServer((req, res) => {
                     circle.style.strokeDasharray = circumference + ' ' + circumference;
                     circle.style.strokeDashoffset = offset;
                 }
-            }, 1000);
+            }, 500);
         }
         
         function displayError(message) {
@@ -460,7 +471,7 @@ const server = http.createServer((req, res) => {
   }
 })
 
-server.listen(8084, () => {
-  console.log('🚀 Fixed ExpenseAI on http://localhost:8084')
+server.listen(3002, () => {
+  console.log('🚀 Redesigned ExpenseAI on http://localhost:3002')
   console.log('📄 Upload your actual ICICI statement for real results')
 })
