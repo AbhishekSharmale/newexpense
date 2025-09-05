@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpenseAI - Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
+                        dark: { 800: '#1f2937', 900: '#111827' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div id="app">
+        <!-- Landing Page -->
+        <div id="landing" class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+            <!-- Header -->
+            <header class="px-6 py-4 flex justify-between items-center">
+                <div class="text-2xl font-bold text-blue-400">ExpenseAI</div>
+                <button onclick="showAuth()" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">Sign In</button>
+            </header>
+
+            <!-- Hero Section -->
+            <section class="px-6 py-20 text-center max-w-4xl mx-auto">
+                <h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">
+                    Transform Your UPI Statements Into Smart Financial Insights
+                </h1>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    AI-powered expense tracking built specifically for Indian spending patterns. 
+                    Upload your bank statement and get instant categorization, predictions, and actionable insights.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                    <input type="email" placeholder="Enter your email" class="px-4 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white w-full sm:w-80">
+                    <button onclick="showAuth()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2 w-full sm:w-auto">
+                        Get Started Free →
+                    </button>
+                </div>
+
+                <div class="text-sm text-gray-400">
+                    ✅ Free forever • ✅ No credit card required • ✅ 100% private
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section class="px-6 py-16 max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12">Built for Indian UPI Users</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 text-center">
+                        <div class="w-12 h-12 text-blue-400 mx-auto mb-4">🧠</div>
+                        <h3 class="text-xl font-semibold mb-2">AI Categorization</h3>
+                        <p class="text-gray-400">Understands PhonePe, GPay, Paytm transactions with 95% accuracy</p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 text-center">
+                        <div class="w-12 h-12 text-blue-400 mx-auto mb-4">🛡️</div>
+                        <h3 class="text-xl font-semibold mb-2">Privacy First</h3>
+                        <p class="text-gray-400">Process PDFs locally, zero data storage, bank-grade security</p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 text-center">
+                        <div class="w-12 h-12 text-blue-400 mx-auto mb-4">📈</div>
+                        <h3 class="text-xl font-semibold mb-2">Smart Predictions</h3>
+                        <p class="text-gray-400">Forecast spending, track goals, optimize EMIs and cashbacks</p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 text-center">
+                        <div class="w-12 h-12 text-blue-400 mx-auto mb-4">⚡</div>
+                        <h3 class="text-xl font-semibold mb-2">Instant Insights</h3>
+                        <p class="text-gray-400">Festival budgets, subscription tracking, spending triggers</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Demo Preview -->
+            <section class="px-6 py-16 bg-gray-800/50">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold mb-8">See Your Money in Action</h2>
+                    <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                        <div class="text-left space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-gray-900 rounded">
+                                <span>🍕 Zomato Delivery</span>
+                                <span class="text-red-400">-₹340</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-900 rounded">
+                                <span>🚗 Uber Ride</span>
+                                <span class="text-red-400">-₹180</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-900 rounded">
+                                <span>💰 Salary Credit</span>
+                                <span class="text-green-400">+₹75,000</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-600">
+                            <p class="text-blue-300">💡 <strong>AI Insight:</strong> You spent 23% more on food delivery this week. Consider cooking at home to save ₹1,200/month.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Auth Page -->
+        <div id="auth" class="min-h-screen bg-gray-900 flex items-center justify-center hidden">
+            <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 max-w-md w-full mx-4">
+                <h1 class="text-2xl font-bold text-center mb-6">Welcome to ExpenseAI</h1>
+                <p class="text-gray-400 text-center mb-8">Sign in to start tracking your expenses</p>
+                
+                <button onclick="showDashboard()" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-3">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+                
+                <button onclick="showLanding()" class="mt-4 w-full text-gray-400 hover:text-white">← Back to Home</button>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="min-h-screen bg-gray-900 hidden">
+            <!-- Header -->
+            <header class="bg-gray-800 border-b border-gray-700 px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-blue-400">ExpenseAI Dashboard</h1>
+                    <div class="flex items-center gap-4">
+                        <span class="text-gray-300">Welcome, Demo User</span>
+                        <button onclick="showLanding()" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-6 max-w-7xl mx-auto">
+                <div id="upload-section">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-bold mb-4">Upload Your First Statement</h2>
+                            <p class="text-gray-400">Get instant AI-powered insights from your bank statement</p>
+                        </div>
+                        
+                        <div class="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-gray-500 transition-colors" onclick="simulateUpload()">
+                            <div class="w-12 h-12 text-gray-400 mx-auto mb-4">📄</div>
+                            <h3 class="text-lg font-semibold mb-2">Upload Bank Statement</h3>
+                            <p class="text-gray-400 mb-4">Drag & drop your PDF statement or click to browse</p>
+                            <p class="text-sm text-gray-500">Supports SBI, HDFC, ICICI, Axis Bank statements</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="analytics-section" class="space-y-6 hidden">
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 text-sm">Total Spent</p>
+                                    <p class="text-2xl font-bold text-red-400">₹47,580</p>
+                                </div>
+                                <div class="text-red-400">📈</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 text-sm">Income</p>
+                                    <p class="text-2xl font-bold text-green-400">₹75,000</p>
+                                </div>
+                                <div class="text-green-400">💰</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 text-sm">Savings</p>
+                                    <p class="text-2xl font-bold text-blue-400">₹27,420</p>
+                                </div>
+                                <div class="text-blue-400">🎯</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 text-sm">vs Last Month</p>
+                                    <p class="text-2xl font-bold text-yellow-400">-8.2%</p>
+                                </div>
+                                <div class="text-yellow-400">📉</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
+                            <h3 class="text-xl font-semibold mb-4">Spending by Category</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <span class="text-sm">Food & Dining</span>
+                                    </div>
+                                    <span class="text-sm font-medium">₹15,420</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-orange-500"></div>
+                                        <span class="text-sm">Transportation</span>
+                                    </div>
+                                    <span class="text-sm font-medium">₹8,340</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                        <span class="text-sm">Shopping</span>
+                                    </div>
+                                    <span class="text-sm font-medium">₹12,680</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                        <span class="text-sm">Entertainment</span>
+                                    </div>
+                                    <span class="text-sm font-medium">₹4,250</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
+                            <h3 class="text-xl font-semibold mb-4">Monthly Trends</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">January</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 h-2 bg-gray-700 rounded">
+                                            <div class="w-3/4 h-2 bg-blue-500 rounded"></div>
+                                        </div>
+                                        <span class="text-sm">₹45,000</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">February</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 h-2 bg-gray-700 rounded">
+                                            <div class="w-full h-2 bg-blue-500 rounded"></div>
+                                        </div>
+                                        <span class="text-sm">₹52,000</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">March</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 h-2 bg-gray-700 rounded">
+                                            <div class="w-4/5 h-2 bg-blue-500 rounded"></div>
+                                        </div>
+                                        <span class="text-sm">₹48,000</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">April</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 h-2 bg-gray-700 rounded">
+                                            <div class="w-4/5 h-2 bg-blue-500 rounded"></div>
+                                        </div>
+                                        <span class="text-sm">₹47,580</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Insights -->
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
+                        <h3 class="text-xl font-semibold mb-4">AI Insights</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-yellow-900/20 rounded-lg border border-yellow-600">
+                                <p class="text-yellow-300">💡 <strong>Spending Alert:</strong> You spent 23% more on food delivery this month. Consider cooking at home to save ₹3,500/month.</p>
+                            </div>
+                            <div class="p-4 bg-green-900/20 rounded-lg border border-green-600">
+                                <p class="text-green-300">✅ <strong>Good News:</strong> Your transportation costs decreased by 15% due to work from home days.</p>
+                            </div>
+                            <div class="p-4 bg-blue-900/20 rounded-lg border border-blue-600">
+                                <p class="text-blue-300">📊 <strong>Prediction:</strong> At current spending rate, you'll save ₹32,000 by month end. On track for your bike goal!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLanding() {
+            document.getElementById('landing').classList.remove('hidden');
+            document.getElementById('auth').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+        }
+
+        function showAuth() {
+            document.getElementById('landing').classList.add('hidden');
+            document.getElementById('auth').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('landing').classList.add('hidden');
+            document.getElementById('auth').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+
+        function simulateUpload() {
+            document.getElementById('upload-section').innerHTML = `
+                <div class="max-w-2xl mx-auto">
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="text-blue-400">📄</div>
+                            <div>
+                                <p class="font-medium">SBI_Statement_April_2024.pdf</p>
+                                <p class="text-sm text-gray-400">2.4 MB</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-4 bg-blue-900/20 rounded-lg border border-blue-600">
+                        <div class="flex items-center gap-3">
+                            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400"></div>
+                            <span class="text-blue-300">Processing your statement...</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                document.getElementById('upload-section').classList.add('hidden');
+                document.getElementById('analytics-section').classList.remove('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

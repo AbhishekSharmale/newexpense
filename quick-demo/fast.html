@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpenseAI - Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #111827; color: white; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .btn { padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-secondary { background: #374151; color: white; }
+        .btn-secondary:hover { background: #4b5563; }
+        .card { background: #1f2937; border: 1px solid #374151; border-radius: 12px; padding: 24px; }
+        .grid { display: grid; gap: 24px; }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+        .flex { display: flex; }
+        .flex-between { justify-content: space-between; }
+        .flex-center { justify-content: center; align-items: center; }
+        .text-center { text-align: center; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-5xl { font-size: 3rem; }
+        .font-bold { font-weight: 700; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-6 { margin-bottom: 24px; }
+        .mb-8 { margin-bottom: 32px; }
+        .py-4 { padding: 16px 0; }
+        .py-16 { padding: 64px 0; }
+        .px-6 { padding: 0 24px; }
+        .hidden { display: none; }
+        .gradient-bg { background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #1e3a8a 100%); }
+        .text-blue { color: #60a5fa; }
+        .text-gray { color: #9ca3af; }
+        .text-red { color: #f87171; }
+        .text-green { color: #4ade80; }
+        .text-yellow { color: #fbbf24; }
+        .border-dashed { border: 2px dashed #4b5563; }
+        .hover-border:hover { border-color: #6b7280; }
+        .upload-area { padding: 48px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .spinner { border: 2px solid #374151; border-top: 2px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .insight { padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+        .insight-yellow { background: rgba(251, 191, 36, 0.1); border: 1px solid #f59e0b; color: #fbbf24; }
+        .insight-green { background: rgba(74, 222, 128, 0.1); border: 1px solid #10b981; color: #4ade80; }
+        .insight-blue { background: rgba(96, 165, 250, 0.1); border: 1px solid #3b82f6; color: #60a5fa; }
+        .progress-bar { width: 80px; height: 8px; background: #374151; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #3b82f6; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing" class="gradient-bg" style="min-height: 100vh;">
+        <header class="flex flex-between py-4 px-6">
+            <div class="text-2xl font-bold text-blue">ExpenseAI</div>
+            <button class="btn btn-secondary" onclick="showAuth()">Sign In</button>
+        </header>
+
+        <section class="text-center py-16 px-6">
+            <div class="container">
+                <h1 class="text-5xl font-bold mb-6" style="background: linear-gradient(to right, white, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Transform Your UPI Statements Into Smart Financial Insights
+                </h1>
+                <p class="text-xl text-gray mb-8" style="max-width: 600px; margin: 0 auto 32px;">
+                    AI-powered expense tracking built specifically for Indian spending patterns. Upload your bank statement and get instant insights.
+                </p>
+                
+                <div class="flex flex-center" style="gap: 16px; margin-bottom: 48px; flex-wrap: wrap;">
+                    <input type="email" placeholder="Enter your email" style="padding: 12px 16px; border-radius: 8px; background: #1f2937; border: 1px solid #4b5563; color: white; width: 300px;">
+                    <button class="btn btn-primary" onclick="showAuth()">Get Started Free →</button>
+                </div>
+
+                <div class="text-gray">✅ Free forever • ✅ No credit card required • ✅ 100% private</div>
+            </div>
+        </section>
+
+        <section class="py-16 px-6">
+            <div class="container">
+                <h2 class="text-3xl font-bold text-center mb-8">Built for Indian UPI Users</h2>
+                <div class="grid grid-4">
+                    <div class="card text-center">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🧠</div>
+                        <h3 class="text-xl font-bold mb-4">AI Categorization</h3>
+                        <p class="text-gray">Understands PhonePe, GPay, Paytm transactions with 95% accuracy</p>
+                    </div>
+                    <div class="card text-center">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🛡️</div>
+                        <h3 class="text-xl font-bold mb-4">Privacy First</h3>
+                        <p class="text-gray">Process PDFs locally, zero data storage, bank-grade security</p>
+                    </div>
+                    <div class="card text-center">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📈</div>
+                        <h3 class="text-xl font-bold mb-4">Smart Predictions</h3>
+                        <p class="text-gray">Forecast spending, track goals, optimize EMIs and cashbacks</p>
+                    </div>
+                    <div class="card text-center">
+                        <div style="font-size: 48px; margin-bottom: 16px;">⚡</div>
+                        <h3 class="text-xl font-bold mb-4">Instant Insights</h3>
+                        <p class="text-gray">Festival budgets, subscription tracking, spending triggers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 px-6" style="background: rgba(31, 41, 55, 0.5);">
+            <div class="container text-center">
+                <h2 class="text-3xl font-bold mb-8">See Your Money in Action</h2>
+                <div class="card" style="max-width: 600px; margin: 0 auto;">
+                    <div style="text-align: left; margin-bottom: 24px;">
+                        <div class="flex flex-between" style="padding: 12px; background: #111827; border-radius: 8px; margin-bottom: 12px;">
+                            <span>🍕 Zomato Delivery</span>
+                            <span class="text-red">-₹340</span>
+                        </div>
+                        <div class="flex flex-between" style="padding: 12px; background: #111827; border-radius: 8px; margin-bottom: 12px;">
+                            <span>🚗 Uber Ride</span>
+                            <span class="text-red">-₹180</span>
+                        </div>
+                        <div class="flex flex-between" style="padding: 12px; background: #111827; border-radius: 8px;">
+                            <span>💰 Salary Credit</span>
+                            <span class="text-green">+₹75,000</span>
+                        </div>
+                    </div>
+                    <div class="insight-blue">
+                        <strong>💡 AI Insight:</strong> You spent 23% more on food delivery this week. Consider cooking at home to save ₹1,200/month.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Auth Page -->
+    <div id="auth" class="hidden flex flex-center" style="min-height: 100vh; background: #111827;">
+        <div class="card" style="max-width: 400px; width: 100%; margin: 0 20px;">
+            <h1 class="text-2xl font-bold text-center mb-6">Welcome to ExpenseAI</h1>
+            <p class="text-gray text-center mb-8">Sign in to start tracking your expenses</p>
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="showDashboard()">
+                🔐 Continue with Google
+            </button>
+            <button style="width: 100%; background: none; border: none; color: #9ca3af; cursor: pointer;" onclick="showLanding()">← Back to Home</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="hidden" style="min-height: 100vh; background: #111827;">
+        <header style="background: #1f2937; border-bottom: 1px solid #374151; padding: 16px 24px;">
+            <div class="flex flex-between">
+                <h1 class="text-2xl font-bold text-blue">ExpenseAI Dashboard</h1>
+                <div class="flex" style="align-items: center; gap: 16px;">
+                    <span class="text-gray">Welcome, Demo User</span>
+                    <button class="btn btn-secondary" onclick="showLanding()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div style="padding: 24px; max-width: 1200px; margin: 0 auto;">
+            <div id="upload-section">
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold mb-4">Upload Your First Statement</h2>
+                        <p class="text-gray">Get instant AI-powered insights from your bank statement</p>
+                    </div>
+                    <div class="border-dashed hover-border upload-area" onclick="simulateUpload()" style="border-radius: 12px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📄</div>
+                        <h3 class="text-xl font-bold mb-4">Upload Bank Statement</h3>
+                        <p class="text-gray mb-4">Drag & drop your PDF statement or click to browse</p>
+                        <p style="color: #6b7280; font-size: 14px;">Supports SBI, HDFC, ICICI, Axis Bank statements</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="analytics-section" class="hidden">
+                <!-- Stats Cards -->
+                <div class="grid grid-4 mb-8">
+                    <div class="card">
+                        <div class="flex flex-between">
+                            <div>
+                                <p class="text-gray" style="font-size: 14px;">Total Spent</p>
+                                <p class="text-2xl font-bold text-red">₹47,580</p>
+                            </div>
+                            <div style="font-size: 32px;">📈</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex flex-between">
+                            <div>
+                                <p class="text-gray" style="font-size: 14px;">Income</p>
+                                <p class="text-2xl font-bold text-green">₹75,000</p>
+                            </div>
+                            <div style="font-size: 32px;">💰</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex flex-between">
+                            <div>
+                                <p class="text-gray" style="font-size: 14px;">Savings</p>
+                                <p class="text-2xl font-bold text-blue">₹27,420</p>
+                            </div>
+                            <div style="font-size: 32px;">🎯</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex flex-between">
+                            <div>
+                                <p class="text-gray" style="font-size: 14px;">vs Last Month</p>
+                                <p class="text-2xl font-bold text-yellow">-8.2%</p>
+                            </div>
+                            <div style="font-size: 32px;">📉</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-2 mb-8">
+                    <div class="card">
+                        <h3 class="text-xl font-bold mb-6">Spending by Category</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="flex flex-between">
+                                <div class="flex" style="align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%;"></div>
+                                    <span>Food & Dining</span>
+                                </div>
+                                <span class="font-bold">₹15,420</span>
+                            </div>
+                            <div class="flex flex-between">
+                                <div class="flex" style="align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #f97316; border-radius: 50%;"></div>
+                                    <span>Transportation</span>
+                                </div>
+                                <span class="font-bold">₹8,340</span>
+                            </div>
+                            <div class="flex flex-between">
+                                <div class="flex" style="align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #eab308; border-radius: 50%;"></div>
+                                    <span>Shopping</span>
+                                </div>
+                                <span class="font-bold">₹12,680</span>
+                            </div>
+                            <div class="flex flex-between">
+                                <div class="flex" style="align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #22c55e; border-radius: 50%;"></div>
+                                    <span>Entertainment</span>
+                                </div>
+                                <span class="font-bold">₹4,250</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="text-xl font-bold mb-6">Monthly Trends</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="flex flex-between">
+                                <span>January</span>
+                                <div class="flex" style="align-items: center; gap: 8px;">
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+                                    <span>₹45,000</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-between">
+                                <span>February</span>
+                                <div class="flex" style="align-items: center; gap: 8px;">
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                                    <span>₹52,000</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-between">
+                                <span>March</span>
+                                <div class="flex" style="align-items: center; gap: 8px;">
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 80%;"></div></div>
+                                    <span>₹48,000</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-between">
+                                <span>April</span>
+                                <div class="flex" style="align-items: center; gap: 8px;">
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 80%;"></div></div>
+                                    <span>₹47,580</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-6">AI Insights</h3>
+                    <div class="insight-yellow">
+                        <strong>💡 Spending Alert:</strong> You spent 23% more on food delivery this month. Consider cooking at home to save ₹3,500/month.
+                    </div>
+                    <div class="insight-green">
+                        <strong>✅ Good News:</strong> Your transportation costs decreased by 15% due to work from home days.
+                    </div>
+                    <div class="insight-blue">
+                        <strong>📊 Prediction:</strong> At current spending rate, you'll save ₹32,000 by month end. On track for your bike goal!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLanding() {
+            document.getElementById('landing').classList.remove('hidden');
+            document.getElementById('auth').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+        }
+
+        function showAuth() {
+            document.getElementById('landing').classList.add('hidden');
+            document.getElementById('auth').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('landing').classList.add('hidden');
+            document.getElementById('auth').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+
+        function simulateUpload() {
+            document.getElementById('upload-section').innerHTML = `
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <div class="card flex flex-between">
+                        <div class="flex" style="align-items: center; gap: 12px;">
+                            <div style="font-size: 32px;">📄</div>
+                            <div>
+                                <p class="font-bold">SBI_Statement_April_2024.pdf</p>
+                                <p class="text-gray" style="font-size: 14px;">2.4 MB</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 16px; padding: 16px; background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; border-radius: 8px;">
+                        <div class="flex" style="align-items: center; gap: 12px;">
+                            <div class="spinner"></div>
+                            <span style="color: #60a5fa;">Processing your statement...</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                document.getElementById('upload-section').classList.add('hidden');
+                document.getElementById('analytics-section').classList.remove('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
