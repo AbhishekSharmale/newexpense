@@ -110,7 +110,7 @@ export default function PDFUploadWorkflow({ onComplete }: PDFUploadWorkflowProps
       const formData = new FormData()
       formData.append('statement', file)
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/process-statement`, {
+      const response = await fetch(`/api/process-statement`, {
         method: 'POST',
         body: formData
       })
