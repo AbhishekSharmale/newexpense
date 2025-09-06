@@ -1,0 +1,15 @@
+{
+  "name": "expense-tracker-worker",
+  "version": "1.0.0",
+  "main": "worker.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "hono": "^3.12.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
