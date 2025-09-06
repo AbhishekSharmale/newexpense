@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API</title>
+</head>
+<body>
+    <h1>Test API Connection</h1>
+    <input type="file" id="fileInput" accept=".pdf">
+    <button onclick="testUpload()">Test Upload</button>
+    <div id="result"></div>
+
+    <script>
+        // Test API connection first
+        async function testConnection() {
+            try {
+                const response = await fetch('http://localhost:4005/test');
+                const result = await response.json();
+                console.log('API Test:', result);
+                return true;
+            } catch (error) {
+                console.error('API Connection failed:', error);
+                return false;
+            }
+        }
+
+        async function testUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a PDF file');
+                return;
+            }
+
+            // Test connection first
+            const connected = await testConnection();
+            if (!connected) {
+                document.getElementById('result').innerHTML = 'Error: Cannot connect to API at http://localhost:4005';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('statement', file);
+
+            try {
+                const response = await fetch('http://localhost:4005/api/process-statement', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+
+        // Test connection on page load
+        window.onload = () => testConnection();
+    </script>
+</body>
+</html>

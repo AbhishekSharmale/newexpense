@@ -1,5 +1,6 @@
 const pdf = require('pdf-parse')
 const BankParsers = require('./bankParsers')
+const ICICIParser = require('./iciciParser')
 const MerchantCategorizer = require('./merchantCategorizer')
 
 class PDFProcessor {
@@ -8,8 +9,17 @@ class PDFProcessor {
       const data = await pdf(buffer)
       const text = data.text
       
-      // Use rule-based bank parsing
-      const parseResult = BankParsers.parse(text)
+      // Detect bank and use appropriate parser
+      let parseResult
+      if (text.includes('ICICI BANK') || text.includes('Customer ID')) {
+        parseResult = {
+          bank: 'ICICI',
+          bankName: 'ICICI Bank',
+          transactions: ICICIParser.parseTransactions(text)
+        }
+      } else {
+        parseResult = BankParsers.parse(text)
+      }
       
       // Categorize each transaction
       const categorizedTransactions = parseResult.transactions.map(transaction => 

@@ -98,45 +98,44 @@ export default function PDFUploadWorkflow({ onComplete }: PDFUploadWorkflowProps
     setCurrentStep('processing')
     setError(null)
 
-    // Simulate processing steps
-    for (let i = 0; i < processingSteps.length; i++) {
-      setCurrentProcessingStep(i)
-      setProcessingProgress(processingSteps[i].progress)
-      
-      // Simulate processing time
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000))
-      
-      // Simulate potential errors
-      if (i === 1 && pdfPassword && Math.random() > 0.8) {
-        setError('Incorrect password. Please try again.')
-        setCurrentStep('password')
-        setPassword('')
-        return
+    try {
+      // Show processing steps
+      for (let i = 0; i < 3; i++) {
+        setCurrentProcessingStep(i)
+        setProcessingProgress(processingSteps[i].progress)
+        await new Promise(resolve => setTimeout(resolve, 500))
       }
-    }
 
-    // Mock successful result
-    const mockResult = {
-      transactions: [
-        { date: '2024-01-15', description: 'UPI-ZOMATO-DELIVERY', amount: -340, category: 'Food & Dining' },
-        { date: '2024-01-16', description: 'UPI-UBER-RIDE', amount: -180, category: 'Transportation' },
-        { date: '2024-01-17', description: 'SALARY-CREDIT', amount: 75000, category: 'Income' }
-      ],
-      summary: {
-        totalTransactions: 45,
-        totalSpent: 47580,
-        totalIncome: 75000,
-        categories: {
-          'Food & Dining': 15420,
-          'Transportation': 8340,
-          'Shopping': 12680,
-          'Entertainment': 4250
-        }
+      // Upload to real API
+      const formData = new FormData()
+      formData.append('statement', file)
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/process-statement`, {
+        method: 'POST',
+        body: formData
+      })
+
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.statusText}`)
       }
-    }
 
-    setCurrentStep('complete')
-    onComplete(mockResult)
+      const result = await response.json()
+      
+      // Complete processing animation
+      for (let i = 3; i < processingSteps.length; i++) {
+        setCurrentProcessingStep(i)
+        setProcessingProgress(processingSteps[i].progress)
+        await new Promise(resolve => setTimeout(resolve, 300))
+      }
+
+      setCurrentStep('complete')
+      onComplete(result)
+      
+    } catch (error) {
+      console.error('Processing error:', error)
+      setError(error instanceof Error ? error.message : 'Processing failed')
+      setCurrentStep('upload')
+    }
   }
 
   const resetUpload = () => {

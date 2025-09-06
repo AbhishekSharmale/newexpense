@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useAuth } from '@/components/auth/AuthProvider-mock'
-import FileUpload from '@/components/ui/FileUpload-simple'
+import PDFUploadWorkflow from '@/components/upload/PDFUploadWorkflow'
 import SimpleChart from '@/components/ui/SimpleChart'
 
 const mockData = {
@@ -25,6 +25,7 @@ export default function Dashboard() {
   const { user, logout } = useAuth()
   const [hasData, setHasData] = useState(false)
   const [processing, setProcessing] = useState(false)
+  const [analysisData, setAnalysisData] = useState<any>(null)
 
   const handleFileUpload = async (file: File) => {
     setProcessing(true)
@@ -33,6 +34,12 @@ export default function Dashboard() {
       setProcessing(false)
       setHasData(true)
     }, 3000)
+  }
+
+  const handleAnalysisComplete = (data: any) => {
+    setAnalysisData(data)
+    setHasData(true)
+    setProcessing(false)
   }
 
   return (
@@ -55,7 +62,7 @@ export default function Dashboard() {
               <h2 className="text-3xl font-bold mb-4">Upload Your First Statement</h2>
               <p className="text-gray-400">Get instant AI-powered insights from your bank statement</p>
             </div>
-            <FileUpload onFileSelect={handleFileUpload} processing={processing} />
+            <PDFUploadWorkflow onComplete={handleAnalysisComplete} />
           </div>
         ) : (
           <div className="space-y-6">
@@ -65,7 +72,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-400 text-sm">Total Spent</p>
-                    <p className="text-2xl font-bold text-red-400">₹47,580</p>
+                    <p className="text-2xl font-bold text-red-400">₹{analysisData?.summary?.totalSpent?.toLocaleString() || '47,580'}</p>
                   </div>
                   <div className="w-8 h-8 text-red-400 text-2xl">📈</div>
                 </div>
@@ -75,7 +82,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-400 text-sm">Income</p>
-                    <p className="text-2xl font-bold text-green-400">₹75,000</p>
+                    <p className="text-2xl font-bold text-green-400">₹{analysisData?.summary?.totalIncome?.toLocaleString() || '75,000'}</p>
                   </div>
                   <div className="w-8 h-8 text-green-400 text-2xl">💰</div>
                 </div>
@@ -85,7 +92,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-400 text-sm">Savings</p>
-                    <p className="text-2xl font-bold text-blue-400">₹27,420</p>
+                    <p className="text-2xl font-bold text-blue-400">₹{analysisData?.summary?.savings?.toLocaleString() || '27,420'}</p>
                   </div>
                   <div className="w-8 h-8 text-blue-400 text-2xl">🎯</div>
                 </div>
@@ -106,7 +113,12 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="card">
                 <h3 className="text-xl font-semibold mb-4">Spending by Category</h3>
-                <SimpleChart data={mockData.categories} type="pie" />
+                <SimpleChart data={analysisData?.summary?.categories ? 
+                  Object.entries(analysisData.summary.categories).map(([name, value]: [string, any]) => ({
+                    name,
+                    value,
+                    color: ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6'][Math.floor(Math.random() * 5)]
+                  })) : mockData.categories} type="pie" />
               </div>
 
               <div className="card">
