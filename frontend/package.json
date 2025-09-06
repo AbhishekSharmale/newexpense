@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm install && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^15.5.2",
     "firebase": "^10.5.0",
     "lucide-react": "^0.290.0",
     "next": "^14.0.0",
