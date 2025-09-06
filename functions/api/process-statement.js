@@ -14,31 +14,61 @@ export async function onRequestPost(context) {
     const arrayBuffer = await file.arrayBuffer()
     const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
     
-    // Extract text using PDF.co API
-    const pdfResponse = await fetch('https://api.pdf.co/v1/pdf/convert/to/text', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'demo' // Free tier
-      },
-      body: JSON.stringify({
-        file: `data:application/pdf;base64,${base64}`,
-        inline: true
-      })
-    })
+    // Try multiple PDF extraction methods
+    let extractedText = ''
     
-    if (!pdfResponse.ok) {
-      throw new Error('PDF extraction failed')
+    try {
+      // Method 1: PDF.co API
+      const pdfResponse = await fetch('https://api.pdf.co/v1/pdf/convert/to/text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': 'demo'
+        },
+        body: JSON.stringify({
+          file: `data:application/pdf;base64,${base64}`,
+          inline: true
+        })
+      })
+      
+      if (pdfResponse.ok) {
+        const pdfResult = await pdfResponse.json()
+        extractedText = pdfResult.body || ''
+      }
+    } catch (e) {
+      console.log('PDF.co failed, trying alternative')
     }
     
-    const pdfResult = await pdfResponse.json()
-    const extractedText = pdfResult.body || ''
+    // Method 2: Basic text extraction fallback
+    if (!extractedText) {
+      const uint8Array = new Uint8Array(arrayBuffer)
+      const decoder = new TextDecoder('utf-8', { ignoreBOM: true })
+      extractedText = decoder.decode(uint8Array)
+      
+      // Clean up binary data
+      extractedText = extractedText.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, '')
+    }
     
     // Parse ICICI transactions from extracted text
     const transactions = parseICICITransactions(extractedText)
     
+    // Debug: Log extracted text sample
+    console.log('Extracted text sample:', extractedText.substring(0, 500))
+    
     if (transactions.length === 0) {
-      throw new Error('No transactions found in PDF')
+      // Return debug info if no transactions found
+      return new Response(JSON.stringify({ 
+        error: 'No transactions found',
+        debug: {
+          textLength: extractedText.length,
+          textSample: extractedText.substring(0, 1000),
+          hasICICIKeywords: extractedText.includes('ICICI'),
+          hasDatePattern: /\d{2}-\d{2}-\d{4}/.test(extractedText)
+        }
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
     
     const totalSpent = transactions.filter(t => t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0)
